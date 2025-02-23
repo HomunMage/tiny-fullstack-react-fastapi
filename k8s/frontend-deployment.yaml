@@ -1,0 +1,31 @@
+# frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: tiny-fullstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: 127.0.0.1:7000/tiny-fullstack-frontend:latest
+        imagePullPolicy: Always  # Add this line
+        ports:
+        - containerPort: 3000
+
+        volumeMounts:
+        - name: frontend-src
+          mountPath: /app/
+      volumes:
+      - name: frontend-src
+        hostPath:
+          path: <folder>/frontend/ # ABSOLUTE PATH HERE
+          type: DirectoryOrCreate
