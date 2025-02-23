@@ -1,4 +1,4 @@
-# server.py
+# main.py
 
 import os
 from datetime import datetime
@@ -11,9 +11,6 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from ServerTee import ServerTee
-from process_handler import ProcessHandler
-from FileTransmit import file_router
-
 from util import flush_print
 
 # log name as today's date in YYYY-MM-DD format
@@ -47,16 +44,15 @@ handlers = {}
 
 @app.get("/hello/")
 async def test_endpoint():
-    print("hello")
+    flush_print("hello")
     return {"message": "Hello World"}
 
-# Include file router
-app.include_router(file_router)
+
 
 # Catch-all route for unmatched GET requests
 @app.api_route("/{anypath:path}", methods=["GET"])
 async def catch_all(request: Request, anypath: str):
-    print(f"Unmatched GET request: {anypath}")
+    flush_print(f"Unmatched GET request: {anypath}")
     return JSONResponse(content={"message": f"Route {anypath} not found"}, status_code=404)
 
 
@@ -64,5 +60,5 @@ async def catch_all(request: Request, anypath: str):
 if __name__ == "__main__":
     import uvicorn
 
-    backend_port = int(os.environ.get("BACKEND_PORT", 8000))  # Default to 5000 if not set
+    backend_port = int(os.environ.get("BACKEND_PORT", 8000))  # Default to 8000 if not set
     uvicorn.run(app, host="0.0.0.0", port=backend_port, reload=True)

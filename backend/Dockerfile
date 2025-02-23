@@ -10,13 +10,14 @@ RUN apt update && apt install cron supervisor -y
 WORKDIR /app
 
 # Copy files to the /app directory
+COPY ./src/ ./src/
 COPY ./requirements.txt ./requirements.txt
 COPY ./daily.sh ./daily.sh
-COPY ./main.py ./main.py # Assuming this is your FastAPI app
 RUN chmod +x /app/daily.sh
 
+
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy cron configuration
 COPY crontab /mycron
