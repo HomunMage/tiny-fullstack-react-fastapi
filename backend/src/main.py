@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from ServerTee import ServerTee
-from util import flush_print
+from util import logger
 
 # log name as today's date in YYYY-MM-DD format
 today_date = datetime.now().strftime("%Y-%m-%d")
@@ -20,7 +20,7 @@ log_file_path = f"log/{today_date}.log"
 # Initialize ServerTee with the dynamically generated log file path
 tee = ServerTee(log_file_path)
 # Print the log file path for reference
-flush_print(log_file_path)
+logger(log_file_path)
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -44,7 +44,7 @@ handlers = {}
 
 @app.get("/hello/")
 async def test_endpoint():
-    flush_print("hello")
+    logger("hello")
     return {"message": "Hello World"}
 
 
@@ -52,7 +52,7 @@ async def test_endpoint():
 # Catch-all route for unmatched GET requests
 @app.api_route("/{anypath:path}", methods=["GET"])
 async def catch_all(request: Request, anypath: str):
-    flush_print(f"Unmatched GET request: {anypath}")
+    logger(f"Unmatched GET request: {anypath}")
     return JSONResponse(content={"message": f"Route {anypath} not found"}, status_code=404)
 
 
