@@ -1,5 +1,3 @@
 #!/bin/bash
-
-echo "daily run this by cron"
-# for new date.log
+echo $(date +%H:%M:%S)
 supervisorctl restart fastapi
