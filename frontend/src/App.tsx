@@ -1,11 +1,18 @@
 // App.tsx
 
-import React from 'react';
-import AppRoutes from './routes/AppRoutes';
+import React, { Suspense } from 'react';
+import {
+    useRoutes,
+} from 'react-router-dom';
+import routes from '~react-pages';
 
 const App: React.FC = () => {
+    const element = useRoutes(routes);
+
     return (
-        <AppRoutes/>
+        <Suspense fallback={<p>Loading...</p>}>
+            {element}
+        </Suspense>
     );
 };
 
